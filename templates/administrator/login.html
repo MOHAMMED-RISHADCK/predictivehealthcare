@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <style>
+        /* General Styles */
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f2f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .main {
+            display: flex;
+            width: 80%;
+            max-width: 900px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            overflow: hidden;
+            background-color: #fff;
+        }
+
+        /* Form Section */
+        .form-div {
+            flex: 1;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .form-div form {
+            width: 100%;
+        }
+
+        .form-div input[type="text"],
+        .form-div input[type="password"] {
+            width: 100%;
+            padding: 15px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .form-div button {
+            width: 100%;
+            padding: 15px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .form-div button:hover {
+            background-color: #0056b3;
+        }
+
+        .form-div p {
+            text-align: right;
+            margin: 10px 0;
+        }
+
+        .form-div p a {
+            text-decoration: none;
+            color: #007bff;
+            font-size: 14px;
+        }
+
+        .form-div p a:hover {
+            text-decoration: underline;
+        }
+
+        /* Image Section */
+        .img-div {
+            flex: 1;
+            background: url('https://via.placeholder.com/450') no-repeat center center/cover;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .main {
+                flex-direction: column;
+            }
+
+            .img-div {
+                height: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="main">
+    <div class="form-div">
+       <form action="#" id="login-frm" method="post">
+        {% csrf_token %}
+           <h2>Login</h2>
+           <input type="text" placeholder="Username"  name="username"required>
+           <input type="password" placeholder="Password" name="password" required>
+           <p><a href="#">Forgot Password?</a></p>
+           <button type="submit">Login</button>
+       </form>
+    </div>
+    <div class="img-div"></div>
+</div>
+</body>
+</html>

@@ -1,0 +1,37 @@
+            <!-- Header -->
+{% extends 'administrator/admin-dashboard.html' %}  
+{% block body %}           
+            <header>
+                <h1>Admin Dashboard</h1>
+                <div class="date">Today: Dec 5</div>
+            </header>
+
+            <!-- Overview Cards -->
+            <section class="cards-overview">
+                <div class="card">
+                    <h3>4,569</h3>
+                    <p>Doctors</p>
+                </div>
+                <div class="card">
+                    <h3>23,009</h3>
+                    <p>Patients</p>
+                </div>
+                <div class="card">
+                    <h3>56</h3>
+                    <p>Appointments</p>
+                </div>
+                
+            </section>
+
+            <!-- Charts -->
+            <section class="charts">
+                <div class="chart" id="patients-overview">
+                    <h3>Patients Overview</h3>
+                    <canvas id="pieChart"></canvas>
+                </div>
+                <div class="chart" id="daily-patients">
+                    <h3>Daily Patients</h3>
+                    <canvas id="barChart"></canvas>
+                </div>
+            </section>
+{% endblock %}
