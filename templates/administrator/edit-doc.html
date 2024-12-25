@@ -3,35 +3,91 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Doctor Edit Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .form-container {
+            width: 100%;
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        label {
+            font-size: 14px;
+            margin-top: 10px;
+            display: block;
+            color: #555;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin: 8px 0;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            width: 100%;
+            padding: 12px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
 </head>
 <body>
-    <form action="#">
-        <label for="">Doctor name </label>
-        <input type="text"><br>
-        <label for="">Department</label>
-        <select name="" id="">
-            <option value="" selected disabled>--select a Department--</option>
-            <option value="">Cardiology</option>
-            <option value="">Orthopedics</option>
-            <option value="">ENT</option>
-            <option value="">Neurology</option>
-            <option value="">Physiotherapy</option>
-        </select> <br>
-        <label for="">Qualification</label>
-        <input type="text" name="" id=""><br>
-        <label for="">Phone number</label>
-        <input type="text" name="" id=""><br>
-        <label for="">Hospital</label>
-        <input type="text" name="" id=""><br>
-        <label for="">image</label>
-        <input type="file" name="" id=""><br>
-        <label for="">Username</label>
-        <input type="text"><br>
-        <label for="">Password</label>
-        <input type="password" name="" id=""><br>
-        <button type="">edit</button>
+    <div class="form-container">
+        <h1>Edit Doctor</h1>
+        <form action="" method="post">
+            {% csrf_token %}
+            <label for="doctor-name">Doctor Name</label>
+            <input type="text" id="doctor-name" placeholder="Enter doctor name" name="Name" value="{{val.Name}}" required>
 
-    </form>
+            <label for="department">Department</label>
+            <select id="department" name="specialization" value="{{val.specialization}}" required>
+                <option value="" disabled>-- Select a Department --</option>
+                <option value="Cardiology">Cardiology</option>
+                <option value="Orthopedics">Orthopedics</option>
+                <option value="ENT">ENT</option>
+                <option value="Neurology">Neurology</option>
+                <option value="Physiotherapy">Physiotherapy</option>
+            </select>
+
+            <label for="qualification">Qualification</label>
+            <input type="text" id="qualification" placeholder="Enter qualification" name="qualification"  value="{{val.qualification}}" required>
+
+            <label for="phone">Phone Number</label>
+            <input type="tel" id="phone" placeholder="Enter phone number" name="phone" value="{{val.phone}}" required">
+
+            <label for="email">Email</label>
+            <input type="email" name="email" id="email" placeholder="Enter email" value="{{val.email}}" required>
+
+            <label for="username">Username</label>
+            <input type="text" id="username" placeholder="Enter username" name="username" disabled>
+
+            <label for="password">Password</label>
+            <input type="password" id="password" placeholder="Enter password" name="password" disabled>
+
+            <button type="submit">Edit</button>
+        </form>
+    </div>
 </body>
 </html>

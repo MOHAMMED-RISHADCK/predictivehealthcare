@@ -1,22 +1,92 @@
+{% extends 'doctor/doc-dashboard.html' %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Patient Appointments</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f5f7;
+        }
+
+        form {
+            margin: 20px auto;
+            padding: 20px;
+            width: 80%;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        button {
+            background-color: #0044cc;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #0033a1;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        table th, table td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        table th {
+            background-color: #0044cc;
+            color: #fff;
+            font-size: 16px;
+        }
+
+        table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        table tr:hover {
+            background-color: #f1f1f1;
+        }
+    </style>
 </head>
 <body>
     <form action="#">
-        <div><button>logout</button></div>
         <div>
-            <table>
+            {% block body %}
+            <table border="1">
                 <tr>
-                    <th>id</th>
-                    <th>patient name</th>
-                    <th>date</th>
-                    <th>time</th>
+                    <th>Patient Name</th>
+                    <th>Visit reason</th>
+                    <th>Date</th>
+                    <th>Time</th>
+                    <td></td>
                 </tr>
+                {% for i in obj %}
+                <tr>
+                    <td>{{i.USERID.firstname}} {{i.USERID.lastname}}</td>
+                    <td>{{i.visitReason}}</td>
+                    <td>{{i.APPOINTMENTDATE}}</td>
+                    <td>{{i.APPOINTMENTTIME}}</td>
+                    <td><a href="/addprescription/{{i.id}}">Add prescription</a><br><a href="/viewprescription/{{i.id}}">View prescription</a></td>
+                </tr>
+                {% endfor %}
             </table>
+            {% endblock %}
         </div>
     </form>
 </body>

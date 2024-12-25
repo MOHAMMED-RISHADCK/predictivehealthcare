@@ -1,3 +1,4 @@
+{% extends 'administrator/admin-dashboard.html' %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,21 +11,24 @@
     <button type="">logout</button>
 </div>
 <div>
+    {% block body %}
     <table border="1">
         <tr>
-            <th>id</th>
             <th>doctor name</th>
             <th>patient name</th>
             <th>date</th>
             <th>time</th>
         </tr>
-        <tr></tr>
-        <tr></tr>
-        <tr></tr>
-        <tr></tr>
-        <tr></tr>
-        <tr></tr>
+        {% for i in obj %}
+        <tr>
+            <td>{{i.DOCTORID.Name}}</td>
+        <td>{{i.USERID.firstname}} {{i.USERID.lastname}}</td>
+            <td>{{i.APPOINTMENTDATE}}</td>
+            <td>{{i.APPOINTMENTTIME}}</td>
+        </tr>
+       {% endfor %}
     </table>
+    {% endblock %}
 </div>     
 </body>
 </html>

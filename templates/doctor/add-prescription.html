@@ -1,3 +1,4 @@
+{% extends 'doctor/doc-dashboard.html' %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,22 +7,27 @@
     <title>Document</title>
 </head>
 <body>
-    <form action="#">
-        <label for="">user id</label>
-        <input type="text" name="" id=""><br>
-        <label for="">patient name</label>
-        <input type="text" name="" id=""><br>
-        <label for="">visit reason</label>
-        <input type="text" name="" id=""><br>
+    {% block body %}
+    <form action="" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <label for="">user id</label> : {{ obj.USERID.id}}<br>
+        
+        <label for="">patient name</label> : {{obj.USERID.firstname}} {{obj.USERID.lastname}}<br>
+    
+        <label for="">visit reason</label> : {{obj.visitReason}}<br>
+        
         <label for="">Diagnosis</label>
-        <input type="text" name="" id=""><br>
+        <input type="text" name="diagnosis" id=""><br>
         <label for="">Medicine</label>
-        <input type="text" name="" id="" placeholder="medicine">
-        <input type="text" name="" id="" placeholder="dose">
-        <input type="text" name="" id="" placeholder="In take per day"><br>
+        <input type="text" name="medicine_name" id="" placeholder="medicine">
+        <input type="text" name="medicine_dosage" id="" placeholder="dose">
+        <input type="text" name="medicine_itd" id="" placeholder="In take per day"><br>
+        <label for="">EXP Date</label>
+        <input type="date" name="expirydate" id=""><br>
         <label for="">Remarks</label>
-        <input type="text" name="" id=""><br>
+        <input type="text" name="remark" id=""><br>
         <button type="submit">Confirm</button>
     </form>
+    {% endblock %}
 </body>
 </html>

@@ -10,6 +10,9 @@ admin.site.register(bookinginfoTable)
 admin.site.register(prescriptionTable)
 admin.site.register(reviewTable)
 admin.site.register(postsTable)
+admin.site.register(NotificationTable)
+
+
 
 
 

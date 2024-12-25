@@ -1,3 +1,4 @@
+{% extends 'doctor/doc-dashboard.html'%}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,18 +7,37 @@
     <title>Document</title>
 </head>
 <body>
+    {% block body %}
     <div class="main">
-        <form action="#" id="frm">
-            <label for="">Patient Id </label>
-            <input type="text" name="" id=""><br>
+        <div class="noti">
+            <table border="1">
+                <tr>
+                    <th>Patient</th>
+                    <th>Content</th>
+                    <th>File</th>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table>
+        </div><br><br>
+        <form action="" method="post" id="frm" enctype="multipart/form-data">
+            {% csrf_token %}
             <label for="">Patient Name </label>
-            <input type="text" name="" id=""><br>
+            <select name="p_id" id="">
+                {% for i in obj %}
+                <option value="{{i.USERID.id}}">{{i.USERID.firstname}} {{i.USERID.lastname}}</option>
+                {% endfor %}
+            </select>
             <label for="">Content </label>
-            <input type="text" name="" id=""><br>
-            <label for="">Attachement </label>
-            <input type="file" name="" id=""><br>
+            <input type="text" name="content" id=""><br>
+            <label for="attachement">Attachement </label>
+            <input type="file" name="attachement" id="file"><br>
             <button type="submit">Send</button>
         </form>
     </div>
+    {% endblock %}
 </body>
 </html>

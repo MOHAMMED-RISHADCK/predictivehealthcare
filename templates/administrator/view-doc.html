@@ -10,20 +10,32 @@
         {% block body %}
         <table border="1">
             <tr>
-                <th>id</th>
-                <th>doctor name</th>
+                
+                <th>Doctor Name</th>
                 <th>Qualification</th>
-                <th>department</th>
-                <th>manage</th>
+                <th>Department</th>
+                <th>Phone</th>
+                <th>Email</th>
+                <th>Manage</th>
             </tr>
-            <tr></tr>
-            <tr></tr>
-            <tr></tr>
-            <tr></tr>
-            <tr></tr>
-            <tr></tr>
+            {%for i in val%}
+            <tr>
+                
+                <td>{{i.Name}}</td>
+                <td>{{i.qualification}}</td>
+                <td>{{i.specialization}}</td>
+                <td>{{i.phone}}</td>
+                <td>{{i.email}}</td>
+                <td>
+                    <a href="/editdoc/{{ i.id }}/">Edit</a>
+                    <br>
+                    <a href="/deletedoc/{{ i.id }}/">Delete</a>
+                </td>
+            </tr>
+            {%endfor%}
+           
         </table>
-        <button>add doctor</button>
+        <a href="doctorregister">add</a>
         {% endblock %}
     </div> 
 </body>

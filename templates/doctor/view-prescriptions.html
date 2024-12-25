@@ -1,3 +1,4 @@
+{% extends 'doctor/doc-dashboard.html' %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,33 +8,35 @@
 </head>
 <body>
     <form action="">
+        {% block body %}
         <table border="1">
             <tr>
-                <th>id</th>
                 <th>patient name</th>
-                <th></th>
+                <th>Visit reason</th>
+                <th>diagnosis</th>
+                <th>medicine </th>
+                <th>medicine dose</th>
+                <th>in take per day</th>
+                <th>issued date</th>
+                <th>exp date</th>
+                <th>remarks</th>
             </tr>
+            {% for i in obj%}
             <tr>
-                <td></td>
-                <td></td>
-                <td><button>prescription</button></td>
+                <td>{{i.APPOINTMENTID.patient_name}}</td>
+                <td>{{i.APPOINTMENTID.visitReason}}</td>
+                <td>{{i.diagnosis}}</td>
+                <td>{{i.medicine_name}}</td>
+                <td>{{i.medicine_dosage}}</td>
+                <td>{{i.medicine_itd}}</td>
+                <td>{{i.issueddate}}</td>
+                <td>{{i.expirydate}}</td>
+                <td>{{i.remark}}</td>
+                
             </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td><button>prescription</button></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td><button>prescription</button></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td></td>
-                <td><button>prescription</button></td>
-            </tr>
+            {% endfor %}
         </table>
+        {% endblock %}
     </form>
 </body>
 </html>

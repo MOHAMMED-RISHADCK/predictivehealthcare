@@ -3,28 +3,111 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Create Post</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            width: 400px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #007bff;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-top: 10px;
+            margin-bottom: 5px;
+        }
+
+        input[type="text"], select, input[type="file"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        select {
+            appearance: none;
+        }
+
+        button {
+            width: calc(50% - 10px);
+            padding: 10px;
+            font-size: 14px;
+            color: #fff;
+            background-color: #007bff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-right: 10px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:last-child {
+            background-color: #6c757d;
+            margin-right: 0;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        button:last-child:hover {
+            background-color: #5a6268;
+        }
+    </style>
 </head>
 <body>
+
     <div class="container">
         <h1>Create Post</h1>
-        <form action="#">
-            <label for="">Title </label>
-            <input type="text" name="" id=""><br>
-            <label for="">Category </label>
-            <select id="category">
+        <form action="" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <label for="title">Title</label>
+            <input type="text" id="title" name="title" placeholder="Enter post title">
+
+            <label for="category">Category</label>
+            <select id="category" name="category">
                 <option value="" disabled selected>Select a category</option>
                 <option value="Nutrition">Nutrition</option>
                 <option value="Exercise">Exercise</option>
                 <option value="Chronic Diseases">Chronic Diseases</option>
                 <option value="Mental Health">Mental Health</option>
-            </select><br>
-            <label for="">Content </label>
-            <input type="text" name="" id=""><br>
-            <label for="">Attach </label>
-            <input type="file" name="" id=""><br>
-            <button type="submit">Publish</button>
-            <button>Save as draft</button>
+            </select>
+
+            <label for="content">Content</label>
+            <input type="text" id="content" name="content" placeholder="Enter post content">
+
+            <label for="file">Attach</label>
+            <input type="file" id="file" name="filepost">
+
+            <div style="display: flex; justify-content: space-between;">
+                <button type="submit">Publish</button>
+                <!-- <button type="button">Save as Draft</button> -->
+            </div>
         </form>
     </div>
 </body>

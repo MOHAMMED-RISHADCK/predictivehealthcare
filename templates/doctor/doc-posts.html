@@ -1,31 +1,124 @@
+{% extends 'doctor/doc-dashboard.html'%}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Styled Post Page</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            min-height: 90vh;
+        }
+
+        .main {
+            flex: 1;
+            padding: 20px;
+        }
+
+        /* Post Styles */
+        .post {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            overflow: hidden;
+        }
+
+        .box {
+            padding: 20px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .post-publisher {
+            font-weight: bold;
+            font-size: 16px;
+            color: #007bff;
+        }
+
+        .post-publish-datetime {
+            font-size: 14px;
+            color: #888;
+            margin-left: 10px;
+        }
+
+        .post-content {
+            margin-top: 10px;
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        /* Footer Styles */
+        footer.foot {
+            background-color: #007bff;
+            color: #fff;
+            padding: 10px 20px;
+            text-align: center;
+            box-shadow: 0 -2px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        footer nav {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+        }
+
+        footer a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 16px;
+            background-color: #0056b3;
+            padding: 8px 16px;
+            border-radius: 4px;
+            transition: background-color 0.3s ease;
+        }
+
+        footer a:hover {
+            background-color: #003d80;
+        }
+    </style>
 </head>
+{% block body %}
 <body>
     <div class="container">
         <div class="main">
             <div class="post">
-                <div class="box">
-                    <span class="post-publisher"></span>
-                    <span class="post-publish-datetime"></span>
-                    <div class="post-content"></div>
-                </div>       
+               <table border="1">
+                <tr>
+                    <th>Title</th>
+                    <th>Category</th>
+                    <th>Content</th>
+                    <th>File</th>
+                </tr>
+                {% for i in obj %}
+                <tr>
+                    <td>{{i.title}}</td>
+                    <td>{{i.category}}</td>
+                    <td>{{i.content}}</td>
+                    <td><img src="{{i.filepost.url}}" alt="error" width="60" height="60"></td>
+                </tr>
+                {% endfor %}
+               </table>      
             </div>
         </div>
+        <br><br>
         <footer class="foot">
             <nav>
-                <div class="my-posts">
-                    My Posts
-                </div>
-                <div class="create-post">
-                    Create
-                </div>
+                <a href="/docaddpost">Create</a>
             </nav>
         </footer>
     </div>
 </body>
+{% endblock %}
 </html>
