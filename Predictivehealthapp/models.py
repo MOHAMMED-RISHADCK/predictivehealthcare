@@ -27,14 +27,15 @@ class userTable(models.Model):
     firstname=models.CharField(max_length=20,null=True,blank=True)
     lastname=models.CharField(max_length=20,null=True,blank=True)
     dob=models.CharField(max_length=20,null=True,blank=True)
+    gender=models.CharField(max_length=20,null=True,blank=True)
     mobile=models.BigIntegerField(null=True,blank=True)
     email=models.CharField(max_length=20,null=True,blank=True)
     address=models.CharField(max_length=300,null=True,blank=True)
-    city=models.CharField(max_length=20,null=True,blank=True)
+    password=models.CharField(max_length=50,null=True,blank=True)
     state=models.CharField(max_length=20,null=True,blank=True)
 class bookinginfoTable(models.Model):
     USERID=models.ForeignKey(userTable,on_delete=models.CASCADE,null=True,blank=True,related_name='userid')
-    DOCTORID=models.ForeignKey(DoctorTable,on_delete=models.CASCADE,null=True,blank=True,related_name='doctorid')
+    DOCTORID=models.ForeignKey(DoctorTable,on_delete=models.CASCADE,null=True,blank=True,)
     patient_name=models.CharField(max_length=300,null=True,blank=True)
     patient_age=models.CharField(max_length=300,null=True,blank=True)
     patient_height=models.CharField(max_length=300,null=True,blank=True)
@@ -77,10 +78,23 @@ class NotificationTable(models.Model):
     content=models.CharField(max_length=100,null=True,blank=True)
     attachement=models.FileField(upload_to='posts',null=True,blank=True)
     status=models.CharField(max_length=20,null=True,blank=True)
-
+    createdat=models.DateField(auto_now_add=True,null=True,blank=True)
 
 
     
+class SlotTable(models.Model):
+    DOCTORID=models.ForeignKey(DoctorTable,on_delete=models.CASCADE,null=True,blank=True)
+    date=models.DateField(null=True,blank=True)
+    time=models.TimeField(null=True,blank=True)
+    createdat=models.DateField(auto_now_add=True,null=True,blank=True)
+    status=models.CharField(max_length=20,null=True,blank=True)
+
+
+    
+    
+
+
+
     
     
     

@@ -23,3 +23,7 @@ class SendnotificationForm(ModelForm):
     class Meta:
         model=NotificationTable
         fields=['content','attachement']
+class docaddslotForm(ModelForm):
+    class Meta:
+        model = SlotTable
+        fields = ['date','time']

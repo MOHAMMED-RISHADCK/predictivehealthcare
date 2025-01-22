@@ -1,0 +1,33 @@
+{% extends 'doctor/doc-dashboard.html'%}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {% block body %}
+    <div class="main-con">
+        <h2>Manage Available Slots</h2>
+        <form id="add-slot-form" action="" method="post">
+            {% csrf_token %}
+            <label for="date">Select Date:</label>
+            <input type="date" id="date" name="date" required><br><br>
+    
+            <label for="time">Time:</label>
+            <input type="time" id="time" name="time" required><br><br>
+    
+            
+    
+            <button type="submit">Add Slot</button>
+        </form>
+    
+        <h3>Available Slots</h3>
+        <div id="slot-list"></div>
+    </div>
+    {% endblock %}
+    
+</body>
+</html>
