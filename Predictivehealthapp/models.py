@@ -84,14 +84,29 @@ class NotificationTable(models.Model):
     
 class SlotTable(models.Model):
     DOCTORID=models.ForeignKey(DoctorTable,on_delete=models.CASCADE,null=True,blank=True)
+    PATIENTID=models.ForeignKey(userTable,on_delete=models.CASCADE,null=True,blank=True)
     date=models.DateField(null=True,blank=True)
     time=models.TimeField(null=True,blank=True)
     createdat=models.DateField(auto_now_add=True,null=True,blank=True)
     status=models.CharField(max_length=20,null=True,blank=True)
+    token = models.CharField(max_length=50, unique=True, blank=True, null=True)  # New field for token
+
+    def save(self, *args, **kwargs):
+        if not self.token and self.DOCTORID and self.date:
+            # Count the number of slots for this doctor on the given date
+            slot_count = SlotTable.objects.filter(DOCTORID=self.DOCTORID, date=self.date).count() + 1
+            
+            # Generate token using doctor ID, date, and slot count
+            self.token = f"D{self.DOCTORID.id}-{self.date.strftime('%Y%m%d')}-{slot_count}"
+        
+        super(SlotTable, self).save(*args, **kwargs)  # Call the parent class's save method
 
 
     
-    
+class ChatHistory(models.Model):
+    user_query = models.TextField()  # User's query
+    chatbot_response = models.TextField()  # Chatbot's response
+    timestamp = models.DateTimeField(auto_now_add=True)
 
 
 

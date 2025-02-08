@@ -345,8 +345,9 @@ class userViewSlot(APIView):
 
 
     
-import genai   
 
+import google.generativeai as genai
+genai.configure(api_key="AIzaSyBfA-PALoDy3VxF5rIHJ03Uz0eYLzDcmZM")
 class chatbotapi(APIView):
     def post(self, request):
         # Get query from the user input
@@ -389,9 +390,33 @@ class chatbotapi(APIView):
                     "chat_history": list(chat_history),
                 }
             )
-
+            print(response_data)
             # Return the chatbot-like response with the itinerary data
-            return Response(response_data, status=200)
+            return Response(response_data, status=201)
         
         except Exception as e:
             return Response({"error": str(e)}, status=400)
+        
+
+class bookslot(APIView):
+    def post(self, request):
+        print("###################",request.data)
+        data={}
+        data=request.data
+        patient=userTable.objects.get(LOGINID__id=request.data['loginid'])
+        data['PATIENTID']=patient.id
+        user_serial=viewSlotSerializer(data=data)
+
+        if user_serial.is_valid():
+            user_serial.save()
+            return Response(user_serial.data, status=status.HTTP_201_CREATED)
+        return Response({'login_error':user_serial.errors}, status=status.HTTP_400__BAD_REQUEST)
+    
+
+class AppointmentCreateView(APIView):
+    def post(self, request, *args, **kwargs):
+        serializer = AppointmentSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

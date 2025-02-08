@@ -43,4 +43,10 @@ class viewAppointmentSerializer(ModelSerializer):
 class viewSlotSerializer(ModelSerializer):
     class Meta:
         model=SlotTable
-        fields=['date','time','createdat']
+        fields='__all__'
+
+class AppointmentSerializer(ModelSerializer):
+    class Meta:
+        model = bookinginfoTable
+        fields=['patient_name', 'patient_age', 'patient_height', 'patient_weight', 'patient_addr', 'APPOINTMENTDATE', 'APPOINTMENTTIME', 'visitReason', 'status']
+
