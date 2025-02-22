@@ -35,7 +35,8 @@ urlpatterns = [
     path('chatbotapi',chatbotapi.as_view(),name='chatbotapi'),
     path('slotview',userViewSlot.as_view(),name="slotview"),
     path('bookslot',bookslot.as_view(),name='bookslot'),
-    path('createappointment',AppointmentCreateView.as_view(),name='createappointment'),
+    path('createappointment/<int:LID>',AppointmentCreateView.as_view(),name='createappointment'),
+    path('forgot-password',ForgotPasswordView.as_view(), name='forgot_password'),
 
 
 

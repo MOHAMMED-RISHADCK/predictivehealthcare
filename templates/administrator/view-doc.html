@@ -3,40 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Document</title>
 </head>
 <body>
+    {% block body %}
+
     <div class="view-doc">
-        {% block body %}
-        <table border="1">
-            <tr>
-                
-                <th>Doctor Name</th>
-                <th>Qualification</th>
-                <th>Department</th>
-                <th>Phone</th>
-                <th>Email</th>
-                <th>Manage</th>
-            </tr>
-            {%for i in val%}
-            <tr>
-                
-                <td>{{i.Name}}</td>
-                <td>{{i.qualification}}</td>
-                <td>{{i.specialization}}</td>
-                <td>{{i.phone}}</td>
-                <td>{{i.email}}</td>
-                <td>
-                    <a href="/editdoc/{{ i.id }}/">Edit</a>
-                    <br>
-                    <a href="/deletedoc/{{ i.id }}/">Delete</a>
-                </td>
-            </tr>
-            {%endfor%}
-           
-        </table>
-        <a href="doctorregister">add</a>
-        {% endblock %}
-    </div> 
+        <h2 class="title">Doctor Management</h2>
+        <div class="responsive-table-container">
+            <table class="responsive-table">
+                <thead>
+                    <tr>
+                        <th>Doctor Name</th>
+                        <th>Qualification</th>
+                        <th>Department</th>
+                        <th>Phone</th>
+                        <th>Email</th>
+                        <th>Manage</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in val %}
+                    <tr>
+                        <td>{{ i.Name }}</td>
+                        <td>{{ i.qualification }}</td>
+                        <td>{{ i.specialization }}</td>
+                        <td>{{ i.phone }}</td>
+                        <td>{{ i.email }}</td>
+                        <td>
+                            <a class="btn btn-edit" href="{% url 'editdoc' i.id %}">✏️ Edit</a><br>
+                            <a class="btn btn-delete" href="{% url 'deletedoc' i.id %}">🗑 Delete</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <center><a class="btn btn-add" href="{% url 'doctorregister' %}">➕ Add Doctor</a></center>
+    </div>
+    {% endblock %}
 </body>
 </html>

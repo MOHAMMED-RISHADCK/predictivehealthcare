@@ -328,7 +328,8 @@ class userViewnotification(APIView):
 
 class userViewappointment(APIView):
     def get(self, request):
-        appointment_obj = bookinginfoTable.objects.all()
+        print("###################", request.data)
+        appointment_obj = bookinginfoTable.objects.filter(USERID__LOGINID_id=request.data['USERID'])
         viewAppointment_serial = viewAppointmentSerializer(appointment_obj, many = True)
         print("------------>", viewAppointment_serial.data)
 
@@ -414,9 +415,55 @@ class bookslot(APIView):
     
 
 class AppointmentCreateView(APIView):
-    def post(self, request, *args, **kwargs):
+    def post(self, request, LID):
         serializer = AppointmentSerializer(data=request.data)
+        user_obj = userTable.objects.get(LOGINID_id=LID)
+        doctor_obj = DoctorTable.objects.get(id=request.data.get('DOCTORID'))
+        print('------------->', doctor_obj)
+        print("######################",request.data)
         if serializer.is_valid():
-            serializer.save()
+            serializer.save(USERID=user_obj, DOCTORID=doctor_obj)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+
+from django.core.mail import send_mail
+from django.conf import settings
+from django.http import JsonResponse
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+import random
+import string
+from .models import PasswordResetToken
+
+# Generate a random password reset token
+class ForgotPasswordView(APIView):
+
+    @staticmethod
+    def generate_reset_token():
+        return ''.join(random.choices(string.ascii_letters + string.digits, k=20))
+
+    def post(self, request):
+        email = request.data.get('email')
+
+        if email:
+            try:
+                user = userTable.objects.get(email=email)
+                passw=LoginTable.objects.get(id=user.LOGINID.id)
+                send_mail(
+                'Password Reset Request',
+                f'Your password {passw.password}',
+                'predictivehealthcare3@gmail.com',  # Update with your email
+                [email],
+                fail_silently=False,
+            )
+
+                return JsonResponse({'message': 'Password reset email sent! Check your inbox.'}, status=200)
+            except userTable.DoesNotExist:
+                return JsonResponse({'message': 'Email not found in our system.'}, status=400)
+            
+        else:
+            return JsonResponse({'message': 'Email is required.'}, status=400)
+
+
+

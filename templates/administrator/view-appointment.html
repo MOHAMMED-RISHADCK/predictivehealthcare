@@ -7,28 +7,34 @@
     <title>Document</title>
 </head>
 <body> 
-<div class="header">
-    <button type="">logout</button>
-</div>
-<div>
     {% block body %}
-    <table border="1">
-        <tr>
-            <th>doctor name</th>
-            <th>patient name</th>
-            <th>date</th>
-            <th>time</th>
-        </tr>
-        {% for i in obj %}
-        <tr>
-            <td>{{i.DOCTORID.Name}}</td>
-        <td>{{i.USERID.firstname}} {{i.USERID.lastname}}</td>
-            <td>{{i.APPOINTMENTDATE}}</td>
-            <td>{{i.APPOINTMENTTIME}}</td>
-        </tr>
-       {% endfor %}
-    </table>
-    {% endblock %}
-</div>     
+    <div class="appointment-container">
+        <h2 class="title">Doctor Appointments</h2>
+    
+        <div class="responsive-table-container">
+            <table class="responsive-table">
+                <thead>
+                    <tr>
+                        <th>Doctor Name</th>
+                        <th>Patient Name</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in obj %}
+                    <tr>
+                        <td>{{ i.DOCTORID.Name }}</td>
+                        <td>{{ i.USERID.firstname }} {{ i.USERID.lastname }}</td>
+                        <td>{{ i.APPOINTMENTDATE }}</td>
+                        <td>{{ i.APPOINTMENTTIME }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+    {% endblock %}     
 </body>
 </html>

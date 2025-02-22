@@ -15,7 +15,7 @@ class LoginSerializer(ModelSerializer):
 class viewDocSerializer(ModelSerializer):
     class Meta:
         model=DoctorTable
-        fields=['Name','specialization','qualification','phone','email']
+        fields=['id','Name','specialization','qualification','phone','email']
 
 class viewPrescriptionSerializer(ModelSerializer):
     doctor_name = serializers.CharField(source='APPOINTMENTID.DOCTORID.Name')
@@ -48,5 +48,5 @@ class viewSlotSerializer(ModelSerializer):
 class AppointmentSerializer(ModelSerializer):
     class Meta:
         model = bookinginfoTable
-        fields=['patient_name', 'patient_age', 'patient_height', 'patient_weight', 'patient_addr', 'APPOINTMENTDATE', 'APPOINTMENTTIME', 'visitReason', 'status']
+        fields=['patient_name', 'patient_age', 'patient_height', 'patient_weight', 'patient_addr', 'visitReason', 'status', 'APPOINTMENTDATE']
 
