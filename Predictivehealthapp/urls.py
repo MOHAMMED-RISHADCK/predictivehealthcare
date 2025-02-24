@@ -37,6 +37,7 @@ urlpatterns = [
     path('bookslot',bookslot.as_view(),name='bookslot'),
     path('createappointment/<int:LID>',AppointmentCreateView.as_view(),name='createappointment'),
     path('forgot-password',ForgotPasswordView.as_view(), name='forgot_password'),
+    path('user-profile/<int:lid>', UserProfileView.as_view(), name='user-profile'),
 
 
 

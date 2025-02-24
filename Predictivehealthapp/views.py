@@ -467,3 +467,23 @@ class ForgotPasswordView(APIView):
 
 
 
+
+class UserProfileView(APIView):
+    def get(self, request, lid):
+        """Retrieve user profile details"""
+        try:
+            user_p = LoginTable.objects.get(id=lid)
+            #print("***************************--->",user_p.username)
+            user = userTable.objects.get(email=user_p.username)
+            print("***************************--->",user.firstname)
+
+            return Response(
+                {
+                    "username": f"{user.firstname} {user.lastname}".strip(),
+                    "email": user.email,
+                    
+                },
+                status=status.HTTP_200_OK,
+            )
+        except userTable.DoesNotExist:
+            return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
