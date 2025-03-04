@@ -41,7 +41,23 @@
             </table>
         </div>
         <center><a class="btn btn-add" href="{% url 'doctorregister' %}">➕ Add Doctor</a></center>
+        {% if messages %}
+        <div class="message-container">
+            {% for message in messages %}
+            <div class="alert alert-success fade-out">{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
     </div>
+
+    <script>
+        setTimeout(function() {
+            let alerts = document.querySelectorAll('.alert');
+            alerts.forEach(alert => alert.style.display = 'none');
+        }, 3000); // Message disappears after 3 seconds
+    </script>
+    
     {% endblock %}
 </body>
 </html>

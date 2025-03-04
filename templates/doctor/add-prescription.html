@@ -10,9 +10,8 @@
     {% block body %}
     <form action="" method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        <label for="">user id</label> : {{ obj.USERID.id}}<br>
         
-        <label for="">patient name</label> : {{obj.USERID.firstname}} {{obj.USERID.lastname}}<br>
+        <label for="">patient name</label> : {{obj.patient_name}}<br>
     
         <label for="">visit reason</label> : {{obj.visitReason}}<br>
         

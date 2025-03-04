@@ -46,26 +46,30 @@ class docreg(View):
         return render(request,'administrator/doc-reg.html')
     def post(self,request):
         form=DocregForm(request.POST)
-        print(form)
+        # print(form)
         if form.is_valid():
              login_instance = LoginTable.objects.create(
                     type='doctor',
                     username=request.POST['username'],
                     password=request.POST['password']
                 )
-             print(login_instance)
+            #  print(login_instance)
                 
-                # Save the shop details with reference to the created user
+                # Save the doctor details with reference to the created user
              reg_form = form.save(commit=False)
              reg_form.LOGINID = login_instance
+             reg_form.status = 1
              reg_form.save()
 
-        return HttpResponse('''<script>alert("Registered successfully!");window.location="/viewdoctors"</script>''')
+        messages.success(request, "Registered successfully!")
+        return redirect('viewdoctors')
         
 class viewdoc(View):
     def get(self,request):
-        obj=DoctorTable.objects.all()
-        print(obj)
+        obj=DoctorTable.objects.filter(status=1)
+        obji = obj.filter(status=1)
+        print("##################################################################",obj)
+        
         return render(request,'administrator/view-doc.html',{'val':obj})
         
 class editdoc(View):
@@ -81,17 +85,24 @@ class editdoc(View):
 
         if form.is_valid():
             form.save()
-        return HttpResponse('''<script>alert("Updated successfully!");window.location="/"</script>''')
+        messages.success(request, "Edit successfully!")
+        return redirect('viewdoctors')
     
 class deletedoc(View):
     def get(self,request,doc_id):
         obj=DoctorTable.objects.get(id=doc_id)
-        obj.delete()
+        # obj.delete()
+        obj.status=0
+        obj.save()
         return redirect('viewdoctors')
 
 class dashboard(View):
      def get(self,request):
-        return render(request,'administrator/dashboard.html')
+        doc_count = DoctorTable.objects.filter(status=1).count()
+        patient_count = bookinginfoTable.objects.count()
+        print("###################",doc_count)
+        print("###################",patient_count)
+        return render(request,'administrator/dashboard.html',{'doc_count':doc_count,'patient_count':patient_count})
 class administratordashboard(View):
     def get(self,request):
         return render(request,'administrator/administrator-dashboard.html')
@@ -171,8 +182,8 @@ class docviewapppointment(View):
         return render(request,'doctor/view-appo-doc.html',{'obj':obj})
 
 class viewprescription(View):
-    def get(self,request,p_id):
-        obj=prescriptionTable.objects.filter(APPOINTMENTID__id=p_id)
+    def get(self,request,lid):
+        obj=prescriptionTable.objects.filter(APPOINTMENTID__id=lid)
         print(obj)
         return render(request,'doctor/view-prescriptions.html',{'obj':obj})
     
@@ -220,7 +231,7 @@ from django.shortcuts import get_object_or_404
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 
-class DoctorDetailsView(View):
+class DoctorDetailsView(APIView):
     @method_decorator(csrf_exempt)  # Optional: If you want to disable CSRF protection for this view
     def get(self, request, lid):
 
@@ -230,7 +241,7 @@ class DoctorDetailsView(View):
         # Get the related booking info for this user and doctor
         bookings = bookinginfoTable.objects.filter(USERID__LOGINID__id=lid)
         bookings1 = bookinginfoTable.objects.filter(USERID__LOGINID__id=lid).first()
-        print(bookings)
+        print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&",bookings1)
 
         # Format the medicines data for each booking
         medicine_list = []

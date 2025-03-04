@@ -1,5 +1,7 @@
+{% extends 'administrator/admin-dashboard.html' %}
 <!DOCTYPE html>
 <html lang="en">
+{% block body %}
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,7 +11,7 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            background-color: #f4f4f4;
+            
         }
         .form-container {
             width: 100%;
@@ -20,7 +22,7 @@
             box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
             border-radius: 8px;
         }
-        h1 {
+        h2 {
             text-align: center;
             color: #333;
         }
@@ -41,7 +43,7 @@
         button {
             width: 100%;
             padding: 12px;
-            background-color: #4CAF50;
+            background-color: #4374c8;
             color: white;
             border: none;
             border-radius: 4px;
@@ -49,13 +51,13 @@
             font-size: 16px;
         }
         button:hover {
-            background-color: #45a049;
+            background-color: #215abb;
         }
     </style>
 </head>
 <body>
     <div class="form-container">
-        <h1>Doctor Registration</h1>
+        <h2>Doctor Registration</h2>
         <form action="" method="post">
             {% csrf_token %}
             <label for="doctor-name">Doctor Name</label>
@@ -90,4 +92,5 @@
         </form>
     </div>
 </body>
+{% endblock %}
 </html>

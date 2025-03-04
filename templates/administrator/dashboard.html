@@ -2,22 +2,22 @@
 {% extends 'administrator/admin-dashboard.html' %}  
 {% block body %}           
             <header>
-                <h1>Admin Dashboard</h1>
-                <div class="date">Today: Dec 5</div>
+                <h1>Predictive Healthcare</h1>
+                <div id="date"></div>
             </header>
 
             <!-- Overview Cards -->
             <section class="cards-overview">
                 <div class="card">
-                    <h3>250</h3>
+                    <h3>{{ doc_count }}</h3>
                     <p>Doctors</p>
                 </div>
                 <div class="card">
-                    <h3>1051</h3>
+                    <h3>{{ patient_count }}</h3>
                     <p>Patients</p>
                 </div>
                 <div class="card">
-                    <h3>850</h3>
+                    <h3>{{ patient_count }}</h3>
                     <p>Appointments</p>
                 </div>
                 
@@ -34,4 +34,12 @@
                     <canvas id="barChart"></canvas>
                 </div>
             </section>
+            <script>
+                function updateDate() {
+                    const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+                    const today = new Date().toLocaleDateString('en-US', options);
+                    document.getElementById('date').innerText = today;
+                }
+                updateDate();
+            </script>
 {% endblock %}

@@ -20,7 +20,7 @@ urlpatterns = [
     path('docposts',docposts.as_view(),name="docposts"),
     path('docsendnotification',docsendnotification.as_view(),name="docsendnotification"),
     path('docviewappointment',docviewapppointment.as_view(),name="docviewappointment"),
-    path('viewprescription/<int:p_id>',DoctorDetailsView.as_view(),name="viewprescription"),
+    path('viewprescription/<int:lid>',viewprescription.as_view(),name="viewprescription"),
     path('docaddslot',docaddslot.as_view(),name="docaddslot"),
 
 
