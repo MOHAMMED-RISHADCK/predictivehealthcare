@@ -271,10 +271,12 @@ body {
 }
 
 .btn-edit {
+    color: white;
     background: #28a745;
 }
 
 .btn-delete {
+    color: white;
     background: #dc3545;
 }
 

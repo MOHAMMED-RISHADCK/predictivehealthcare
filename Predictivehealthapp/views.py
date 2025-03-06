@@ -1,3 +1,4 @@
+from datetime import date
 from django.shortcuts import render,redirect
 from django.views import View
 
@@ -30,9 +31,11 @@ class login(View):
             obj = LoginTable.objects.get(username=username,password=password)
             request.session['user_id'] = obj.id
             if obj.type == 'admin':
-                return render(request,'administrator/dashboard.html')
+                doc_count = DoctorTable.objects.filter(status=1).count()
+                patient_count = bookinginfoTable.objects.count()
+                return render(request,'administrator/dashboard.html',{'doc_count':doc_count,'patient_count':patient_count})
             if obj.type == 'doctor':
-                return render(request,'doctor/doc-dashboard.html')
+                return render(request,'doctor/doc-dash.html')
             else:
                 return HttpResponse("User type not recognized")
         except LoginTable.DoesNotExist:
@@ -130,8 +133,12 @@ class addprescription(View):
             f=form.save(commit=False)
             f.APPOINTMENTID=obj
             f.save()
+            obj.status = "visited"
+            obj.save(update_fields=['status']) 
+        
 
-        return HttpResponse('''<script>alert("Updated successfully!");window.location="/docviewappointment"</script>''')
+        messages.success(request, "Added successfully!")
+        return redirect('docviewappointment')
     
 class docaddpost(View):
     def get(self,request):
@@ -145,11 +152,28 @@ class docaddpost(View):
             obj = DoctorTable.objects.get(LOGINID__id=request.session.get('user_id'))
             f.DOCTORID=obj
             f.save()
-            return HttpResponse('''<script>alert("Created successfully!");window.location="/docposts"</script>''')
+            messages.success(request, "Added successfully!")
+        return redirect('docposts')
+
+class patientoverview(View):
+    def get(self,request):
+        doc_obj = DoctorTable.objects.get(LOGINID__id=request.session.get('user_id'))
+        upcoming_appointments = bookinginfoTable.objects.filter(DOCTORID=doc_obj, APPOINTMENTDATE__gte=date.today()).order_by('APPOINTMENTDATE')
+        past_appointments = bookinginfoTable.objects.filter(DOCTORID=doc_obj, APPOINTMENTDATE__lt=date.today()).order_by('-APPOINTMENTDATE')
+
+        listappo = {
+        'upcoming_appointments': upcoming_appointments,
+        'past_appointments': past_appointments,
+        }
+        return render(request,'doctor/patient-overview.html',listappo)
     
 class docdashboard(View):
     def get(self,request):
         return render(request,'doctor/doc-dashboard.html')
+    
+class docdash(View):
+    def get(self,request):
+        return render(request,'doctor/doc-dash.html')
     
 class docposts(View):
     def get(self,request):
@@ -433,7 +457,7 @@ class AppointmentCreateView(APIView):
         print('------------->', doctor_obj)
         print("######################",request.data)
         if serializer.is_valid():
-            serializer.save(USERID=user_obj, DOCTORID=doctor_obj)
+            serializer.save(USERID=user_obj, DOCTORID=doctor_obj, status='pending')
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
@@ -498,3 +522,29 @@ class UserProfileView(APIView):
             )
         except userTable.DoesNotExist:
             return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
+
+
+class ReviewView(APIView):
+    def post(self, request, lid):
+        serializer = ReviewSerializer(data=request.data)
+        user_obj = userTable.objects.get(LOGINID_id=lid)
+        doctor_obj = DoctorTable.objects.get(id=request.data.get('doctor_id'))
+        print('------------->', doctor_obj)
+        print("######################",request.data)
+        if serializer.is_valid():
+            serializer.save(USERID=user_obj, DOCTORID=doctor_obj, reviewcomment=request.data.get('review'))
+            
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+class UserViewreview(APIView):
+    def get(self, request, doc_id):
+        """
+        Fetch all reviews for a specific doctor.
+        """
+        try:
+            reviews = reviewTable.objects.filter(DOCTORID_id=doc_id).order_by('-id')  # Newest first
+            serializer = ReviewSerializer(reviews, many=True)
+            return Response(serializer.data, status=status.HTTP_200_OK)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)

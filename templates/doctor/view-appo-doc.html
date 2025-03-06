@@ -11,6 +11,15 @@
     <form action="#">
         <div>
             {% block body %}
+            <center>
+            {% if messages %}
+            <div class="message-container">
+                {% for message in messages %}
+                <b><div class="alert alert-success fade-out" style="color: rgb(33, 183, 33);font-size: 1.5rem;">{{ message }}</div></b>
+                {% endfor %}
+            </div>
+            {% endif %}
+            </center>
             <table border="1">
                 <tr>
                     <th>Patient Name</th>
@@ -29,7 +38,13 @@
                 </tr>
                 {% endfor %}
             </table>
-                
+            
+            <script>
+                setTimeout(function() {
+                    let alerts = document.querySelectorAll('.alert');
+                    alerts.forEach(alert => alert.style.display = 'none');
+                }, 3000); // Message disappears after 3 seconds
+            </script>
             {% endblock %}
         </div>
     </form>

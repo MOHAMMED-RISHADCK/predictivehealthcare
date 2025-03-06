@@ -54,13 +54,13 @@ class prescriptionTable(models.Model):
     medicine_itd=models.CharField(max_length=20,null=True,blank=True)
     issueddate=models.DateField(auto_now_add=True,null=True,blank=True)
     expirydate=models.DateField(null=True,blank=True)
-    remark=models.CharField(max_length=20,null=True,blank=True)
+    remark=models.CharField(max_length=200,null=True,blank=True)
     status=models.CharField(max_length=20,null=True,blank=True)
 class reviewTable(models.Model):
     USERID=models.ForeignKey(userTable,on_delete=models.CASCADE,null=True,blank=True,related_name='USERID')
     DOCTORID=models.ForeignKey(DoctorTable,on_delete=models.CASCADE,null=True,blank=True,related_name='DOCTORID')
-    rating=models.CharField(max_length=20,null=True,blank=True)
-    reviewcomment=models.CharField(max_length=20,null=True,blank=True)
+    rating=models.DecimalField(max_digits=2, decimal_places=1,null=True,blank=True)
+    reviewcomment=models.CharField(max_length=200,null=True,blank=True)
     reviewtime=models.TimeField(auto_now_add=True,null=True,blank=True)
     status=models.CharField(max_length=20,null=True,blank=True)
 class postsTable(models.Model):

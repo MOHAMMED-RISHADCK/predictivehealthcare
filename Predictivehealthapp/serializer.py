@@ -25,9 +25,10 @@ class viewPrescriptionSerializer(ModelSerializer):
         fields=['doctor_name','diagnosis','medicine_name','medicine_dosage','medicine_itd','expirydate','remark', 'issueddate']
 
 class viewPostSerializer(ModelSerializer):
+    doctor_name = serializers.CharField(source="DOCTORID.Name", read_only=True)
     class Meta:
         model=postsTable
-        fields=['title','category','content','filepost','createdat']
+        fields=['doctor_name','title','category','content','filepost','createdat']
 
 class viewNotificationSerializer(ModelSerializer):
     class Meta:
@@ -50,3 +51,7 @@ class AppointmentSerializer(ModelSerializer):
         model = bookinginfoTable
         fields=['patient_name', 'patient_age', 'patient_height', 'patient_weight', 'patient_addr', 'visitReason', 'status', 'APPOINTMENTDATE']
 
+class ReviewSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = reviewTable
+        fields = [ 'DOCTORID', 'USERID', 'rating', 'reviewcomment', 'reviewtime']

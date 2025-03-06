@@ -1,0 +1,73 @@
+{% extends 'doctor/doc-dashboard.html' %}
+
+{% block body %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor's Patients Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 900px;
+            margin: auto;
+        }
+        .section {
+            background: white;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+        }
+        .card {
+            background: #e3f2fd;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Patient Overview</h2>
+
+        <div class="section">
+            <h3>Upcoming Patients</h3>
+            {% if upcoming_appointments %}
+                {% for appointment in upcoming_appointments %}
+                <div class="card">
+                    <strong>Name:</strong> {{ appointment.patient_name }} <br>
+                    <strong>Appointment Date:</strong> {{ appointment.APPOINTMENTDATE }} <br>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p>No upcoming patients.</p>
+            {% endif %}
+        </div>
+
+        <div class="section">
+            <h3>Past Patients</h3>
+            {% if past_appointments %}
+                {% for appointment in past_appointments %}
+                <div class="card">
+                    <strong>Name:</strong> {{ appointment.patient_name }} <br>
+                    <strong>Last Visit:</strong> {{ appointment.APPOINTMENTDATE }} <br>
+                </div>
+                {% endfor %}
+            {% else %}
+                <p>No past patients.</p>
+            {% endif %}
+        </div>
+    </div>
+</body>
+{% endblock %}
+</html>

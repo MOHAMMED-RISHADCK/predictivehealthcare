@@ -1,0 +1,103 @@
+{% extends 'doctor/doc-dashboard.html' %}
+
+{% block body %}
+<style>
+    /* Background Styling */
+    body {
+        background: linear-gradient(to right, #e3f2fd, #ffffff); /* Light Blue to White Gradient */
+        font-family: 'Poppins', sans-serif;
+        margin: 0;
+        padding: 20px;
+    }
+
+    /* Dashboard Grid */
+    .dashboard {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr); /* Two cards per row */
+        gap: 20px;
+        padding: 20px;
+        max-width: 1200px;
+        margin: auto;
+    }
+
+    /* Card Styling */
+    .card {
+        background: #ffffff;
+        padding: 40px;
+        border-radius: 15px;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+        text-align: center;
+        min-height: 250px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        border-left: 6px solid #007bff; /* Blue Accent */
+        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    }
+
+    .card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    /* Typography */
+    .card h3 {
+        font-size: 24px;
+        margin-bottom: 10px;
+        color: #007bff;
+    }
+
+    .card p {
+        font-size: 18px;
+        color: #555;
+        flex-grow: 1;
+    }
+
+    /* Buttons */
+    .btn {
+        display: inline-block;
+        margin-top: 15px;
+        padding: 12px 24px;
+        background: #007bff;
+        color: white;
+        text-decoration: none;
+        border-radius: 8px;
+        font-size: 18px;
+        transition: background 0.3s ease-in-out;
+    }
+
+    .btn:hover {
+        background: #0056b3;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 900px) {
+        .dashboard {
+            grid-template-columns: 1fr; /* Single column on smaller screens */
+        }
+    }
+</style>
+
+<div class="dashboard">
+    <div class="card">
+        <h3>Patient Overview</h3>
+        <p>Manage patient details and medical history.</p>
+        <a href="/patientoverview" class="btn">View Patients</a>
+    </div>
+    <div class="card">
+        <h3>Appointments</h3>
+        <p>Check and manage scheduled appointments.</p>
+        <a href="/docviewappointment" class="btn">View Appointments</a>
+    </div>
+    <div class="card">
+        <h3>Posts</h3>
+        <p>Share medical insights and updates.</p>
+        <a href="/docposts" class="btn">Manage Posts</a>
+    </div>
+    <div class="card">
+        <h3>Notifications</h3>
+        <p>Stay updated with important alerts.</p>
+        <a href="/docsendnotification" class="btn">View Notifications</a>
+    </div>
+</div>
+{% endblock %}

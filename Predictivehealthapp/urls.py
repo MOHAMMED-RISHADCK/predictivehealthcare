@@ -22,6 +22,8 @@ urlpatterns = [
     path('docviewappointment',docviewapppointment.as_view(),name="docviewappointment"),
     path('viewprescription/<int:lid>',viewprescription.as_view(),name="viewprescription"),
     path('docaddslot',docaddslot.as_view(),name="docaddslot"),
+    path('patientoverview',patientoverview.as_view(),name="patientoverview"),
+    path('docdash',docdash.as_view(),name="docdash"),
 
 
 
@@ -38,6 +40,9 @@ urlpatterns = [
     path('createappointment/<int:LID>',AppointmentCreateView.as_view(),name='createappointment'),
     path('forgot-password',ForgotPasswordView.as_view(), name='forgot_password'),
     path('user-profile/<int:lid>', UserProfileView.as_view(), name='user-profile'),
+    path('addreview/<int:lid>', ReviewView.as_view(), name='addreview'),
+    path('getreviews/<int:doc_id>/', UserViewreview.as_view(), name='getreviews'), 
+
 
 
 
