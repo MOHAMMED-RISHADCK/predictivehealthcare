@@ -12,6 +12,7 @@ class DoctorTable(models.Model):
     qualification=models.CharField(max_length=20,null=True,blank=True)
     phone=models.BigIntegerField(null=True,blank=True)
     email=models.CharField(max_length=255,null=True,blank=True)
+    avg_rating=models.DecimalField(max_digits=3, decimal_places=2,null=True,blank=True)
     status=models.CharField(max_length=20,null=True,blank=True)
 
 class medicineTable(models.Model): 

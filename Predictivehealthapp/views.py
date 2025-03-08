@@ -1,4 +1,5 @@
 from datetime import date
+from tracemalloc import Statistic
 from django.shortcuts import render,redirect
 from django.views import View
 
@@ -16,6 +17,7 @@ from rest_framework.status import (
     HTTP_401_UNAUTHORIZED
 )
 from django.contrib.auth.hashers import check_password
+from django.db.models import Avg
 # Create your views here.
 
 
@@ -40,7 +42,7 @@ class login(View):
                 return HttpResponse("User type not recognized")
         except LoginTable.DoesNotExist:
             messages.error(request,"Invalid username or password")
-            return redirect(login)
+        return redirect('login')
         
 
 
@@ -336,7 +338,7 @@ class userviewDoc(APIView):
 class userViewPrescription(APIView):
     def get(self, request, lid):
         lid_list =[]
-        prescription_obj = bookinginfoTable.objects.filter(USERID__LOGINID_id=lid)
+        prescription_obj = bookinginfoTable.objects.filter(USERID__LOGINID_id=lid).order_by('-APPOINTMENTDATE')
         for i in prescription_obj:
             lid_list.append(i.USERID__LOGINID_id)
         obj = prescriptionTable.objects.filter(APPOINTMENTID__USERID__LOGINID__in=lid_list)
@@ -347,7 +349,7 @@ class userViewPrescription(APIView):
 
 class userViewpost(APIView):
     def get(self, request):
-        post_obj = postsTable.objects.all()
+        post_obj = postsTable.objects.all().order_by('-createdat')
         viewPost_serial = viewPostSerializer(post_obj, many = True)
         print("------------>", viewPost_serial.data)
         
@@ -356,7 +358,7 @@ class userViewpost(APIView):
 
 class userViewnotification(APIView):
     def get(self, request):
-        notification_obj = NotificationTable.objects.all()
+        notification_obj = NotificationTable.objects.all().order_by('-createdat')
         viewNotification_serial = viewNotificationSerializer(notification_obj, many = True)
         return Response(viewNotification_serial.data)
 
@@ -364,7 +366,7 @@ class userViewnotification(APIView):
 class userViewappointment(APIView):
     def get(self, request):
         print("###################", request.data)
-        appointment_obj = bookinginfoTable.objects.filter(USERID__LOGINID_id=request.data['USERID'])
+        appointment_obj = bookinginfoTable.objects.filter(USERID__LOGINID_id=request.data['USERID']).order_by('-APPOINTMENTDATE')
         viewAppointment_serial = viewAppointmentSerializer(appointment_obj, many = True)
         print("------------>", viewAppointment_serial.data)
 
@@ -533,9 +535,21 @@ class ReviewView(APIView):
         print("######################",request.data)
         if serializer.is_valid():
             serializer.save(USERID=user_obj, DOCTORID=doctor_obj, reviewcomment=request.data.get('review'))
+            self.update_doctor_rating(doctor_obj)
             
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+    def update_doctor_rating(self, doctor_obj):
+        """Calculate the new average rating and update the DoctorTable"""
+        reviews = reviewTable.objects.filter(DOCTORID=doctor_obj)
+        average_rating = reviews.aggregate(avg_rating=Avg('rating'))['avg_rating'] or 0.0
+        print('$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$----Average rating:', average_rating)
+        
+        # Update doctor's rating
+        doctor_obj.avg_rating = round(average_rating, 2)
+        doctor_obj.save()
     
 class UserViewreview(APIView):
     def get(self, request, doc_id):
@@ -543,7 +557,7 @@ class UserViewreview(APIView):
         Fetch all reviews for a specific doctor.
         """
         try:
-            reviews = reviewTable.objects.filter(DOCTORID_id=doc_id).order_by('-id')  # Newest first
+            reviews = reviewTable.objects.filter(DOCTORID_id=doc_id).order_by('-reviewtime')  # Newest first
             serializer = ReviewSerializer(reviews, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
         except Exception as e:
