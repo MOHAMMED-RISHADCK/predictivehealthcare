@@ -106,6 +106,7 @@ class SlotTable(models.Model):
 
     
 class ChatHistory(models.Model):
+    USERID=models.ForeignKey(userTable,on_delete=models.CASCADE,null=True,blank=True)
     user_query = models.TextField()  # User's query
     chatbot_response = models.TextField()  # Chatbot's response
     timestamp = models.DateTimeField(auto_now_add=True)

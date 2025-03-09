@@ -15,7 +15,7 @@ class LoginSerializer(ModelSerializer):
 class viewDocSerializer(ModelSerializer):
     class Meta:
         model=DoctorTable
-        fields=['id','Name','specialization','qualification','phone','email','avg_rating']
+        fields=['id','Name','specialization','qualification','phone','email','avg_rating','status']
 
 class viewPrescriptionSerializer(ModelSerializer):
     doctor_name = serializers.CharField(source='APPOINTMENTID.DOCTORID.Name')

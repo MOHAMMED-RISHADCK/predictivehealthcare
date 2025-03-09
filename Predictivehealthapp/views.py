@@ -306,7 +306,7 @@ class LoginPage(APIView):
         # Get data from the request
         username = request.data.get("username")
         password = request.data.get("password")
-        print("$$$$$$$$$$$$$$",username)
+        print("$$$$$$$-username-----",username)
         # Validate input
         if not username or not password:
             response_dict["message"] = "failed"
@@ -314,7 +314,7 @@ class LoginPage(APIView):
 
         # Fetch the user from LoginTable
         t_user = LoginTable.objects.filter(username=username).first()
-        print("%%%%%%%%%%%%%%%%%%%%", t_user)
+        print("&&&&&&&&&&&&&&&-userinlogintable-------", t_user)
         if not t_user:
             response_dict["message"] = "failed"
             return Response(response_dict, status=HTTP_401_UNAUTHORIZED)
@@ -387,7 +387,7 @@ class userViewSlot(APIView):
 import google.generativeai as genai
 genai.configure(api_key="AIzaSyBfA-PALoDy3VxF5rIHJ03Uz0eYLzDcmZM")
 class chatbotapi(APIView):
-    def post(self, request):
+    def post(self, request, lid):
         # Get query from the user input
         user_query = request.data.get('query', '')
 
@@ -413,6 +413,7 @@ class chatbotapi(APIView):
             ChatHistory.objects.create(
                 user_query=user_query,
                 chatbot_response=gemini_chatbot_response,
+                USERID=userTable.objects.get(LOGINID_id=lid)
             )
 
             # Update response data with the chatbot response
@@ -429,6 +430,9 @@ class chatbotapi(APIView):
                 }
             )
             print(response_data)
+
+            # f = ChatHistory(USERID=userTable.objects.get(LOGINID_id=lid))
+            # f.save()
             # Return the chatbot-like response with the itinerary data
             return Response(response_data, status=201)
         
@@ -558,7 +562,9 @@ class UserViewreview(APIView):
         """
         try:
             reviews = reviewTable.objects.filter(DOCTORID_id=doc_id).order_by('-reviewtime')  # Newest first
+            
             serializer = ReviewSerializer(reviews, many=True)
+            
             return Response(serializer.data, status=status.HTTP_200_OK)
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
