@@ -9,9 +9,10 @@
         /* General Styles */
         body {
             margin: 0;
+            padding: 0;
             font-family: Arial, sans-serif;
-            background: linear-gradient(to right, #a1c4fd, #c2e9fb);
-            background: url("{% static 'images/background5.jpeg' %}") no-repeat center center/cover;
+            background: linear-gradient(to bottom, #4a90e2, #dff6ff, #ffffff);
+            background: url("{% static 'images/bg_2.webp' %}") no-repeat center center/cover;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -117,20 +118,29 @@
     </style>
 </head>
 <body>
-<div class="main">
-    <div class="form-div">
-       <form action="#" id="login-frm" method="post">
-            {% csrf_token %}
-           <h2>Login</h2>
-           <input type="text" placeholder="Username"  name="username" required>
-           <input type="password" placeholder="Password" name="password" required>
-           <p><a href="#">Forgot Password?</a></p>
-           <button type="submit" id="login-btn">Login</button>
-       </form>
+    <div style="display: flex; flex-direction: column; align-items: center; width: 100%; gap: 5px;">
+        <h1 style="text-align: center; font-size: 95px; color: #fff; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; margin-bottom: 5px;color:#fffeee;">
+            SMARTCARE
+        </h1>
+
+        <div class="main">
+            <div class="form-div">
+               <form action="#" id="login-frm" method="post">
+                    {% csrf_token %}
+                   <h2>Login</h2>
+                   <input type="text" placeholder="Username"  name="username" required>
+                   <input type="password" placeholder="Password" name="password" required>
+                   <p><a href="#">Forgot Password?</a></p>
+                   <button type="submit" id="login-btn">Login</button>
+               </form>
+            </div>
+            <div class="img-div">
+                <!-- <img src="{% static 'images/background6.jpeg' %}" alt="Login Illustration"> -->
+            </div>
+        </div>
     </div>
-    <div class="img-div">
-        <!-- <img src="{% static 'images/background6.jpeg' %}" alt="Login Illustration"> -->
-    </div>
-</div>
 </body>
+
+
+
 </html>

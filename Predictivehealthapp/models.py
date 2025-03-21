@@ -76,7 +76,7 @@ class postsTable(models.Model):
     
 class NotificationTable(models.Model):
     DOCTORID=models.ForeignKey(DoctorTable,on_delete=models.CASCADE,null=True,blank=True)
-    PATIENTID=models.ForeignKey(userTable,on_delete=models.CASCADE,null=True,blank=True)
+    PATIENTID=models.ForeignKey(bookinginfoTable,on_delete=models.CASCADE,null=True,blank=True)
     content=models.CharField(max_length=100,null=True,blank=True)
     attachement=models.FileField(upload_to='posts',null=True,blank=True)
     status=models.CharField(max_length=20,null=True,blank=True)

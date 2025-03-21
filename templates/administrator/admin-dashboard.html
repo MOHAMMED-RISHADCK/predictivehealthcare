@@ -6,9 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hospital Dashboard</title>
     <link rel="stylesheet" href="{% static 'styles/admini-css/administrator.css' %}" type="text/css"> 
-    <!-- <link rel="stylesheet" href="{% static 'styles/admini-css/view-appointmentcss' %}" type="text/css"> -->
-    <!-- <link rel="stylesheet" href="{% static 'styles/admini-css/view-doc.css' %}" type="text/css"> -->
-
 </head>
 <body>
     <div class="container">
@@ -26,7 +23,6 @@
                 </ul>
             </nav>
         </aside>
-
         <!-- Main Content -->
         <main id="main">
             {% block body %}
@@ -34,10 +30,5 @@
             {% endblock %}
         </main>
     </div>
-
-    <!-- Chart.js (Add this library for charts) -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    
-    
 </body>
 </html>

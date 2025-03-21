@@ -34,7 +34,11 @@
                     <td>{{i.title}}</td>
                     <td>{{i.category}}</td>
                     <td>{{i.content}}</td>
+                    {% if i.filepost %}
                     <td><img src="{{i.filepost.url}}" alt="error" width="60" height="60"></td>
+                    {% else %}
+                    <td>No file</td>
+                    {% endif %}
                 </tr>
                 {% endfor %}
                </table>      

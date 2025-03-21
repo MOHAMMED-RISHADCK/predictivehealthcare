@@ -185,18 +185,25 @@ class docposts(View):
     
 class docsendnotification(View):
     def get(self,request):
-        obj=bookinginfoTable.objects.filter(DOCTORID__LOGINID_id=request.session['user_id'],status="approve")
-        return render(request,'doctor/doc-send-notification.html',{'obj':obj})
+        objView=NotificationTable.objects.filter(DOCTORID__LOGINID_id=request.session['user_id'])
+        obj=bookinginfoTable.objects.filter(DOCTORID__LOGINID_id=request.session['user_id'])
+        
+        print("&&&&&&&&&&&&&&&&&&&&&&&&&&&-> ",objView)
+        print("&&&&&&&&&&&&&&&&&&&&&&&&&&&-> ",obj)
+
+        return render(request,'doctor/doc-send-notification.html',{'objView':objView,'obj':obj})
     def post(self,request):
         form = SendnotificationForm(request.POST,request.FILES)
         if form.is_valid():
             f=form.save(commit=False)
             doc_obj = DoctorTable.objects.get(LOGINID__id=request.session.get('user_id'))
+            print("^^^^^^^^^^^^^^^^^^^^^", doc_obj)
             user_id=request.POST['p_id']
-            user_obj = userTable.objects.get(id=user_id)
-            print("^^^^^^^^^^^^^^^^^^", user_obj)
+            print("^^^^^^^^^^^^^^^^^^^^^^^^^^^->", user_id)
+            patient_booking = bookinginfoTable.objects.get(USERID=user_id)
+            print("^^^^^^^^^^^^^^^^^^^^^", patient_booking)
             f.DOCTORID=doc_obj
-            f.PATIENTID=user_obj
+            f.PATIENTID=patient_booking
             f.save()
             return HttpResponse('''<script>alert("Send successfully!");window.location="/docsendnotification"</script>''')
     
@@ -385,59 +392,57 @@ class userViewSlot(APIView):
     
 
 import google.generativeai as genai
+from django.core.exceptions import ObjectDoesNotExist
+
 genai.configure(api_key="AIzaSyBfA-PALoDy3VxF5rIHJ03Uz0eYLzDcmZM")
-class chatbotapi(APIView):
-    def post(self, request, lid):
+class ChatbotAPI(APIView):
+    def post(self, request):
         # Get query from the user input
-        user_query = request.data.get('query', '')
+        user_query = request.data.get("query", "").strip()
+        if not user_query:
+            return Response({"error": "Missing query parameter"}, status=400)
 
-        # Default response if no input
-        response_data = {
-            'chatbot_response': "",
-            "chat_history": [],   # This will store the chatbot-like response
-        }
+        # Prepare response structure
+        response_data = {"chatbot_response": "", "chat_history": []}
 
-
-        # Construct the prompt using the filtered data (ensure it's only from the models)
-        print(user_query)
-        prompt = (
-            f"User Query: {user_query}. "
-            f"Provide the response based on above data"
-        )
+        # Construct prompt for Gemini API
+        prompt = f"User Query: {user_query}. Provide a helpful response."
 
         try:
-            # Call Gemini API to generate the response
-            gemini_response = genai.GenerativeModel("gemini-1.5-flash").generate_content(prompt)
-            gemini_chatbot_response = gemini_response.text.strip()
-            print(user_query)
-            ChatHistory.objects.create(
-                user_query=user_query,
-                chatbot_response=gemini_chatbot_response,
-                USERID=userTable.objects.get(LOGINID_id=lid)
+            # Call Gemini API
+            model = genai.GenerativeModel("gemini-1.5-flash")
+            gemini_response = model.generate_content(prompt)
+
+            # Check if the response is valid
+            gemini_chatbot_response = getattr(gemini_response, "text", "").strip()
+            if not gemini_chatbot_response:
+                return Response({"error": "No response from Gemini"}, status=500)
+
+            # Save response to database
+            chat_entry = ChatHistory.objects.create(
+                user_query=user_query, chatbot_response=gemini_chatbot_response
             )
 
-            # Update response data with the chatbot response
-            response_data['chatbot_response'] = gemini_chatbot_response
-                        # Retrieve the chat history
+            # Retrieve the latest chat history
             chat_history = ChatHistory.objects.order_by("-timestamp").values(
                 "user_query", "chatbot_response", "timestamp"
-            )
+            )[:10]  # Limit to last 10 messages for efficiency
+
+            # Update response with chatbot response & history
             response_data.update(
                 {
-
                     "chatbot_response": gemini_chatbot_response,
                     "chat_history": list(chat_history),
                 }
             )
-            print(response_data)
 
-            # f = ChatHistory(USERID=userTable.objects.get(LOGINID_id=lid))
-            # f.save()
-            # Return the chatbot-like response with the itinerary data
-            return Response(response_data, status=201)
-        
+            return Response(response_data, status=200)
+
+        except ObjectDoesNotExist:
+            return Response({"error": "User not found"}, status=400)
+
         except Exception as e:
-            return Response({"error": str(e)}, status=400)
+            return Response({"error": f"Internal Server Error: {str(e)}"}, status=500)
         
 
 class bookslot(APIView):

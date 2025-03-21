@@ -22,7 +22,7 @@ class AddpostForm(ModelForm):
 class SendnotificationForm(ModelForm):
     class Meta:
         model=NotificationTable
-        fields=['content','attachement']
+        fields=['DOCTORID','PATIENTID','content','attachement']
 class docaddslotForm(ModelForm):
     class Meta:
         model = SlotTable
